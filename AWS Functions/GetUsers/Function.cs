@@ -9,7 +9,8 @@ using Autofac;
 using Common.Abstractions;
 using Common.Implementation;
 using Domain.Models;
-using Domain.Services;
+using Domain.Interfaces;
+using Infrastructure;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.LambdaJsonSerializer))]
@@ -24,6 +25,7 @@ namespace GetUsers
         {
             _resolver = new AutofacResolver(x =>
             {
+                x.RegisterType<UserRepository>().As<IUserRepository>();
                 x.RegisterType<UserService>().As<IUserService>();
             });
             _userService = _resolver.Resolve<IUserService>();

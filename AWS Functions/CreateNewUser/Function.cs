@@ -8,7 +8,8 @@ using Application;
 using Common.Abstractions;
 using Common.Implementation;
 using Domain.Models;
-using Domain.Services;
+using Domain.Interfaces;
+using Infrastructure;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.LambdaJsonSerializer))]
@@ -23,6 +24,7 @@ namespace CreateNewUser
         {
             _resolver = new StructuremapResolver(x => 
             {
+                x.For<IUserRepository>().Use<UserRepository>();
                 x.For<IUserService>().Use<UserService>();
             });
             _userService = _resolver.Resolve<IUserService>();
